@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- GOOGLE QIDIRUV UCHUN SEO META TEGLARI -->
+    <title>Matematika Test — Mantiqiy va Tezkor Matematika O'yini</title>
+    <meta name="description" content="Matematika test va mantiqiy topishmoqlar o'yini. O'zingizni sinab ko'ring, tezkor hisob va mantiqiy savollarga javob bering!">
+    <meta name="keywords" content="matematika-test, matematika test, mantiqiy savollar, mantiqiy testlar, matematika oyini, tezkor hisob">
+    <meta name="author" content="Matematika Test">
+    <meta name="robots" content="index, follow">
+
+    <!-- GOOGLE BOTLARI UCHUN STRUCTURED DATA (SCHEMA) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "matematika-test",
+      "alternateName": "Matematika Test O'yini",
+      "url": "https://sizning-saytingiz.netlify.app",
+      "applicationCategory": "EducationalGame",
+      "operatingSystem": "All",
+      "description": "Matematik va mantiqiy testlar, topishmoqlar o'yini."
+    }
+    </script>
+
+    <!-- TAILWIND CSS VA ICONS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
+        body { font-family: 'Outfit', sans-serif; }
+        .pulse-timer { animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- O'YIN KONTEYNERI -->
+    <div id="game-container" class="w-full max-w-xl bg-slate-800/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-700/50 relative overflow-hidden">
+        
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/10 rounded-full blur-xl pointer-events-none"></div>
+
+        <!-- 1. BOSHANG'ICH EKRAN -->
+        <div id="start-screen" class="text-center space-y-6">
+            <div class="inline-flex p-4 bg-indigo-500/10 rounded-2xl text-indigo-400 mb-2 border border-indigo-500/20">
+                <i class="fa-solid fa-brain text-4xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Matematika Test
+            </h1>
+            <p class="text-slate-400 text-sm sm:text-base max-w-md mx-auto">
+                Qiziqarli mantiqiy va matematik testlarga javob bering, bilimingizni sinang!
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4">
+                <button onclick="startGame('mantiq')" class="p-4 bg-slate-700/50 hover:bg-indigo-600/20 hover:border-indigo-500 border border-slate-600 rounded-xl transition-all duration-300 text-left group">
+                    <i class="fa-solid fa-lightbulb text-indigo-400 group-hover:scale-110 transition-transform mb-2"></i>
+                    <h3 class="font-semibold text-slate-200">Mantiq</h3>
+                    <p class="text-xs text-slate-400">Topishmoqlar</p>
+                </button>
+                <button onclick="startGame('hisob')" class="p-4 bg-slate-700/50 hover:bg-purple-600/20 hover:border-purple-500 border border-slate-600 rounded-xl transition-all duration-300 text-left group">
+                    <i class="fa-solid fa-calculator text-purple-400 group-hover:scale-110 transition-transform mb-2"></i>
+                    <h3 class="font-semibold text-slate-200">Tezkor Hisob</h3>
+                    <p class="text-xs text-slate-400">Qonuniyatlar</p>
+                </button>
+                <button onclick="startGame('aralash')" class="p-4 bg-slate-700/50 hover:bg-pink-600/20 hover:border-pink-500 border border-slate-600 rounded-xl transition-all duration-300 text-left group">
+                    <i class="fa-solid fa-layer-group text-pink-400 group-hover:scale-110 transition-transform mb-2"></i>
+                    <h3 class="font-semibold text-slate-200">Aralash</h3>
+                    <p class="text-xs text-slate-400">Barcha turlar</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. SAVOL EKRANI -->
+        <div id="quiz-screen" class="hidden space-y-6">
+            <div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl border border-slate-700/40">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Savol:</span>
+                    <span id="question-number" class="font-bold text-indigo-400">1/5</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-1 text-amber-400 font-bold">
+                        <i class="fa-solid fa-star text-sm"></i>
+                        <span id="score-display">0</span>
+                    </div>
+                    <div id="timer-box" class="flex items-center space-x-1 font-mono font-bold text-emerald-400 bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700">
+                        <i class="fa-regular fa-clock text-xs"></i>
+                        <span id="time-left">20</span>s
+                    </div>
+                </div>
+            </div>
+
+            <div class="min-h-[90px] flex items-center">
+                <h2 id="question-text" class="text-lg sm:text-xl font-semibold text-slate-100 leading-relaxed">
+                    Savol yuklanmoqda...
+                </h2>
+            </div>
+
+            <div id="options-container" class="grid grid-cols-1 gap-3"></div>
+
+            <div id="explanation-box" class="hidden p-4 bg-slate-900/80 border border-indigo-500/30 rounded-xl text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-indigo-400 font-bold">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Tushuntirish / Ishlanishi:</span>
+                </div>
+                <p id="explanation-text" class="text-slate-300 leading-relaxed"></p>
+                <button onclick="nextQuestion()" class="w-full mt-2 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2">
+                    <span>Keyingi savol</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. NATIJA EKRANI -->
+        <div id="result-screen" class="hidden text-center space-y-6">
+            <div class="inline-flex p-4 bg-purple-500/10 rounded-full text-purple-400 mb-2 border border-purple-500/20">
+                <i class="fa-solid fa-trophy text-5xl"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold text-slate-100">O'yin yakunlandi!</h2>
+            
+            <div class="bg-slate-900/60 p-6 rounded-xl border border-slate-700/50 max-w-sm mx-auto space-y-3">
+                <p class="text-slate-400 text-sm">Umumiy natijangiz:</p>
+                <div class="text-4xl font-extrabold text-amber-400" id="final-score">0 ball</div>
+                <p class="text-xs text-slate-400" id="correct-count">0 / 5 ta to'g'ri javob</p>
+            </div>
+
+            <button onclick="resetGame()" class="w-full max-w-sm py-3.5 bg-indigo-600 hover:bg-indigo-500 font-bold rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/25">
+                Qaytadan o'ynash
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questionsDatabase = {
+            mantiq: [
+                {
+                    question: "Bir idishdagi suv har kuni 2 barobar ko'payadi. Idish 30 kunda to'ldi. Idishning yarmi nechanchi kunda to'lgan?",
+                    options: ["15-kuni", "29-kuni", "28-kuni", "25-kuni"],
+                    answer: 1,
+                    explanation: "Suv har kuni 2 barobar ko'paygani uchun, 30-kundan roppa-rosa 1 kun oldin (29-kuni) idishning yarmi to'la bo'ladi."
+                },
+                {
+                    question: "3 ta qutida 'Olma', 'Nok', va 'Olma va Nok' yozuvlari bor. Barcha yozuvlar XATO. Qaysi qutini ochib bitta meva ko'rsangiz, qolganlarini topasiz?",
+                    options: ["Olma", "Nok", "Olma va Nok", "Farqi yo'q"],
+                    answer: 2,
+                    explanation: "'Olma va Nok' yozilgan qutida hamma yozuv xato bo'lgani uchun yo toza Olma, yo toza Nok bor. Undan chiqgan mevaga qarab qolganlarini darhol aniqlab bo'ladi."
+                }
+            ],
+            hisob: [
+                {
+                    question: "Ushbu qonuniyatdagi keyingi sonni toping: 2, 4, 8, 16, 32, ?",
+                    options: ["48", "64", "50", "36"],
+                    answer: 1,
+                    explanation: "Har bir son o'zidan oldingisini 2 ga ko'paytirishdan hosil bo'lmoqda: 32 × 2 = 64."
+                },
+                {
+                    question: "Qonuniyatni davom ettiring: 3, 5, 9, 17, 33, ?",
+                    options: ["65", "49", "50", "66"],
+                    answer: 0,
+                    explanation: "Farqlar: +2, +4, +8, +16... Keyingi qo'shiladigan son: +32. Demak, 33 + 32 = 65."
+                }
+            ]
+        };
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctAnswersCount = 0;
+        let timer = null;
+        let timeLeft = 20;
+        let canAnswer = true;
+
+        function startGame(category) {
+            score = 0;
+            correctAnswersCount = 0;
+            currentQuestionIndex = 0;
+            
+            if (category === 'aralash') {
+                currentQuestions = [...questionsDatabase.mantiq, ...questionsDatabase.hisob].sort(() => Math.random() - 0.5);
+            } else {
+                currentQuestions = [...questionsDatabase[category]].sort(() => Math.random() - 0.5);
+            }
+
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            canAnswer = true;
+            document.getElementById('explanation-box').classList.add('hidden');
+            
+            const q = currentQuestions[currentQuestionIndex];
+            document.getElementById('question-number').innerText = `${currentQuestionIndex + 1}/${currentQuestions.length}`;
+            document.getElementById('score-display').innerText = score;
+            document.getElementById('question-text').innerText = q.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 bg-slate-700/40 hover:bg-slate-700/80 border border-slate-600/60 rounded-xl font-medium transition-all duration-200 flex items-center justify-between group";
+                btn.onclick = () => checkAnswer(index, btn);
+                btn.innerHTML = `<span>${opt}</span><i class="fa-regular fa-circle text-slate-500 group-hover:text-indigo-400 transition-colors"></i>`;
+                optionsContainer.appendChild(btn);
+            });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 20;
+            const timerDisplay = document.getElementById('time-left');
+            const timerBox = document.getElementById('timer-box');
+            timerDisplay.innerText = timeLeft;
+            timerBox.className = "flex items-center space-x-1 font-mono font-bold text-emerald-400 bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700";
+
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+
+                if (timeLeft <= 5) {
+                    timerBox.className = "flex items-center space-x-1 font-mono font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-lg border border-rose-500/30 pulse-timer";
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timeOutAnswer();
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            if (!canAnswer) return;
+            canAnswer = false;
+            clearInterval(timer);
+
+            const q = currentQuestions[currentQuestionIndex];
+            const optionsBtns = document.getElementById('options-container').children;
+
+            if (selectedIndex === q.answer) {
+                btnElement.className = "w-full text-left p-4 bg-emerald-500/20 border-2 border-emerald-500 rounded-xl font-medium text-emerald-300 flex items-center justify-between";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+                score += 10 + timeLeft * 2;
+                correctAnswersCount++;
+            } else {
+                btnElement.className = "w-full text-left p-4 bg-rose-500/20 border-2 border-rose-500 rounded-xl font-medium text-rose-300 flex items-center justify-between";
+                btnElement.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-400 text-lg";
+
+                const correctBtn = optionsBtns[q.answer];
+                correctBtn.className = "w-full text-left p-4 bg-emerald-500/20 border border-emerald-500/50 rounded-xl font-medium text-emerald-300 flex items-center justify-between";
+            }
+
+            showExplanation(q.explanation);
+        }
+
+        function timeOutAnswer() {
+            if (!canAnswer) return;
+            canAnswer = false;
+            const q = currentQuestions[currentQuestionIndex];
+            const optionsBtns = document.getElementById('options-container').children;
+            const correctBtn = optionsBtns[q.answer];
+            correctBtn.className = "w-full text-left p-4 bg-emerald-500/20 border border-emerald-500/50 rounded-xl font-medium text-emerald-300 flex items-center justify-between";
+
+            showExplanation("Vaqt tugadi! " + q.explanation);
+        }
+
+        function showExplanation(text) {
+            document.getElementById('explanation-text').innerText = text;
+            document.getElementById('explanation-box').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${score} ball`;
+            document.getElementById('correct-count').innerText = `${currentQuestions.length} ta savoldan ${correctAnswersCount} tasiga to'g'ri javob berdingiz.`;
+        }
+
+        function resetGame() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
